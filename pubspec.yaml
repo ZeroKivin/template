@@ -1,0 +1,45 @@
+name: template
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.6 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  dio: ^4.0.6
+  logger: ^1.1.0
+  provider: ^6.0.3
+  retrofit: ^3.0.1+1
+  json_annotation: ^4.6.0
+  kiwi: ^4.0.2
+  easy_localization: ^3.0.1
+  pretty_dio_logger: ^1.1.1
+  equatable: ^2.0.5
+  elementary: ^1.5.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.1
+  dart_code_metrics: ^4.17.1
+  build_runner: ^2.1.10
+  json_serializable: ^6.2.0
+  retrofit_generator: ^4.0.1
+  mocktail: ^0.3.0
+  mocktail_image_network: ^0.3.1
+  golden_toolkit: ^0.13.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
