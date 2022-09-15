@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:template/assets/app_theme.dart';
 import 'package:template/config/app_config.dart';
 import 'package:template/config/environment/environment.dart';
-import 'package:template/navigation/navigation.dart';
+import 'package:template/navigation/app_router.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -11,14 +11,16 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final environment = Environment<AppConfig>.instance();
-    final navigation = context.read<Navigation>();
+    final appRouter = context.read<AppRouter>();
+    final scaffoldMessengerKey =
+        context.read<GlobalKey<ScaffoldMessengerState>>();
 
     return AnimatedBuilder(
       animation: environment,
       builder: (_, __) {
         final debugOptions = environment.config.debugOptions;
 
-        return MaterialApp(
+        return MaterialApp.router(
           /// Debug configuration.
           showPerformanceOverlay: debugOptions.showPerformanceOverlay,
           debugShowMaterialGrid: debugOptions.debugShowMaterialGrid,
@@ -34,10 +36,9 @@ class App extends StatelessWidget {
           themeMode: ThemeMode.light,
 
           /// Navigation configuration.
-          navigatorKey: navigation.rootNavigationKey,
-          scaffoldMessengerKey: navigation.scaffoldMessengerKey,
-          onGenerateRoute: GenerateRouter.generateRootRoute,
-          initialRoute: '/',
+          routerDelegate: appRouter.delegate(),
+          routeInformationParser: appRouter.defaultRouteParser(),
+          scaffoldMessengerKey: scaffoldMessengerKey,
         );
       },
     );

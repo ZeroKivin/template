@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:template/feature/debug/screens/debug_screen/debug_screen_export.dart';
 import 'package:template/internal/app.dart';
 import 'package:template/internal/di/injector.dart';
-import 'package:template/navigation/navigation.dart';
+import 'package:template/navigation/app_router.dart';
 
 class AppDependencies extends StatefulWidget {
   const AppDependencies({
@@ -19,17 +19,19 @@ class AppDependencies extends StatefulWidget {
 
 class _AppDependenciesState extends State<AppDependencies> {
   final Injector _injector = Injector();
-  final Navigation _navigation = Navigation();
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<Navigation>.value(
-          value: _navigation,
+        ChangeNotifierProvider<AppRouter>(
+          create: (_) => AppRouter(),
         ),
-        Provider<DebugScreenModel>(
-          create: (_) => _injector.container.resolve(),
+        Provider<GlobalKey<ScaffoldMessengerState>>(
+          create: (_) => GlobalKey<ScaffoldMessengerState>(),
+        ),
+        Provider<DebugScreenModel>.value(
+          value: _injector.container.resolve(),
         ),
       ],
       child: widget.app,

@@ -5,7 +5,7 @@ import 'package:template/config/debug_options.dart';
 import 'package:template/config/url.dart';
 import 'package:template/feature/debug/screens/debug_screen/debug_screen.dart';
 import 'package:template/feature/debug/screens/debug_screen/debug_screen_model.dart';
-import 'package:template/navigation/navigation.dart';
+import 'package:template/navigation/app_router.dart';
 
 // ignore_for_file: avoid_positional_boolean_parameters
 
@@ -15,7 +15,7 @@ DebugScreenWidgetModel debugScreenWidgetModelFactory(
 ) {
   return DebugScreenWidgetModel(
     model: context.read<DebugScreenModel>(),
-    navigation: context.read<Navigation>(),
+    navigation: context.read<AppRouter>(),
   );
 }
 
@@ -28,10 +28,8 @@ class DebugScreenWidgetModel extends WidgetModel<DebugScreen, DebugScreenModel>
     required this.navigation,
   }) : super(model);
 
-  /// Class that coordinates navigation for the whole app.
-  final Navigation navigation;
+  final AppRouter navigation;
 
-  /// Empty string.
   static const String _emptyString = '';
 
   final TextEditingController _textEditingController = TextEditingController();
