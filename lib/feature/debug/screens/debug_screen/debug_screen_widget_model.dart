@@ -1,34 +1,35 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:template/config/app_config.dart';
 import 'package:template/config/debug_options.dart';
+import 'package:template/config/environment/environment.dart';
 import 'package:template/config/url.dart';
 import 'package:template/feature/debug/screens/debug_screen/debug_screen.dart';
 import 'package:template/feature/debug/screens/debug_screen/debug_screen_model.dart';
-import 'package:template/navigation/app_router.dart';
-
 // ignore_for_file: avoid_positional_boolean_parameters
 
 /// Factory for [DebugScreenWidgetModel].
 DebugScreenWidgetModel debugScreenWidgetModelFactory(
   BuildContext context,
 ) {
+  final model = DebugScreenModel(
+    errorHandler: context.read<ErrorHandler>(),
+    environment: Environment<AppConfig>.instance(),
+  );
+
   return DebugScreenWidgetModel(
-    model: context.read<DebugScreenModel>(),
-    navigation: context.read<AppRouter>(),
+    model: model,
   );
 }
 
 /// Widget Model for [DebugScreen].
 class DebugScreenWidgetModel extends WidgetModel<DebugScreen, DebugScreenModel>
     implements IDebugScreenWidgetModel {
-  /// Create an instance [DebugScreenModel].
+  /// Create an instance [DebugScreenWidgetModel].
   DebugScreenWidgetModel({
     required DebugScreenModel model,
-    required this.navigation,
   }) : super(model);
-
-  final AppRouter navigation;
 
   static const String _emptyString = '';
 
