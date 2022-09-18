@@ -27,9 +27,6 @@ class _AppDependenciesState extends State<AppDependencies> {
         ChangeNotifierProvider<AppRouter>(
           create: (_) => AppRouter(),
         ),
-        Provider<GlobalKey<ScaffoldMessengerState>>(
-          create: (_) => GlobalKey<ScaffoldMessengerState>(),
-        ),
         Provider<ErrorHandler>.value(
           value: _injector.resolve<ErrorHandler>(),
         ),

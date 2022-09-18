@@ -12,8 +12,6 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final environment = Environment<AppConfig>.instance();
     final appRouter = context.read<AppRouter>();
-    final scaffoldMessengerKey =
-        context.read<GlobalKey<ScaffoldMessengerState>>();
 
     return AnimatedBuilder(
       animation: environment,
@@ -38,7 +36,6 @@ class App extends StatelessWidget {
           /// Navigation configuration.
           routerDelegate: appRouter.delegate(),
           routeInformationParser: appRouter.defaultRouteParser(),
-          scaffoldMessengerKey: scaffoldMessengerKey,
         );
       },
     );
