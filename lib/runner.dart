@@ -13,21 +13,19 @@ Future<void> run() async {
   /// Fix orientation.
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  _runApp();
-}
+  // TODO(init-project): Инициализировать Crashlytics.
+  /*FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack);
 
-void _runApp() {
-  runZonedGuarded<Future<void>>(
-    () async {
-      runApp(
-        const AppDependencies(
-          app: App(),
-        ),
-      );
-    },
-    (exception, stack) {
-      // TODO(init-project): Инициализировать Crashlytics.
-      // FirebaseCrashlytics.instance.recordError(exception, stack);
-    },
+    return true;
+  };*/
+
+  runApp(
+    const AppDependencies(
+      app: App(),
+    ),
   );
 }
