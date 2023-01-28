@@ -1,9 +1,14 @@
+import 'package:dio/adapter.dart';
+import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:provider/provider.dart';
+import 'package:template/config/app_config.dart';
+import 'package:template/config/environment/environment.dart';
 import 'package:template/internal/app.dart';
-import 'package:template/internal/di/injector.dart';
 import 'package:template/navigation/app_router.dart';
+import 'package:template/util/error_handler/default_error_handler.dart';
 
 class AppDependencies extends StatefulWidget {
   const AppDependencies({
@@ -18,8 +23,6 @@ class AppDependencies extends StatefulWidget {
 }
 
 class _AppDependenciesState extends State<AppDependencies> {
-  final Injector _injector = Injector();
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -27,11 +30,58 @@ class _AppDependenciesState extends State<AppDependencies> {
         ChangeNotifierProvider<AppRouter>(
           create: (_) => AppRouter(),
         ),
-        Provider<ErrorHandler>.value(
-          value: _injector.resolve<ErrorHandler>(),
+        Provider<ErrorHandler>(
+          create: (_) => DefaultErrorHandler(),
         ),
       ],
       child: widget.app,
     );
+  }
+
+  Dio _initDio([Iterable<Interceptor>? additionalInterceptors]) {
+    const timeout = Duration(seconds: 30);
+
+    final dio = Dio();
+    final environment = Environment<AppConfig>.instance();
+
+    dio.options
+      ..baseUrl = environment.config.url
+      ..connectTimeout = timeout.inMilliseconds
+      ..receiveTimeout = timeout.inMilliseconds
+      ..sendTimeout = timeout.inMilliseconds;
+
+    environment.addListener(() {
+      dio.options.baseUrl = environment.config.url;
+    });
+
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (client) {
+      final proxyUrl = environment.config.proxyUrl;
+      if (proxyUrl != null && proxyUrl.isNotEmpty) {
+        client
+          ..findProxy = (uri) {
+            return 'PROXY $proxyUrl';
+          }
+          ..badCertificateCallback = (_, __, ___) {
+            return true;
+          };
+      }
+
+      return client;
+    };
+
+    if (additionalInterceptors != null) {
+      dio.interceptors.addAll(additionalInterceptors);
+    }
+
+    if (environment.isDebug) {
+      dio.interceptors.add(
+        PrettyDioLogger(
+          requestBody: true,
+        ),
+      );
+    }
+
+    return dio;
   }
 }

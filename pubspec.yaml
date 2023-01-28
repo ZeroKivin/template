@@ -19,7 +19,6 @@ dependencies:
   retrofit: ^3.0.1+1
   json_annotation: ^4.6.0
   freezed_annotation: ^2.1.0
-  kiwi: ^4.0.2
   easy_localization: ^3.0.1
   pretty_dio_logger: ^1.1.1
   elementary: ^1.5.0

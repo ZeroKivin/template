@@ -445,14 +445,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.5.4"
-  kiwi:
-    dependency: "direct main"
-    description:
-      name: kiwi
-      sha256: d336f4436abafdb06606b137fee38ec869a63f8faa75b3c112bccfd552f2f746
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.3"
   lints:
     dependency: transitive
     description:
