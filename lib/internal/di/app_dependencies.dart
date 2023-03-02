@@ -1,5 +1,5 @@
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -46,15 +46,15 @@ class _AppDependenciesState extends State<AppDependencies> {
 
     dio.options
       ..baseUrl = environment.config.url
-      ..connectTimeout = timeout.inMilliseconds
-      ..receiveTimeout = timeout.inMilliseconds
-      ..sendTimeout = timeout.inMilliseconds;
+      ..connectTimeout = timeout
+      ..receiveTimeout = timeout
+      ..sendTimeout = timeout;
 
     environment.addListener(() {
       dio.options.baseUrl = environment.config.url;
     });
 
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
         (client) {
       final proxyUrl = environment.config.proxyUrl;
       if (proxyUrl != null && proxyUrl.isNotEmpty) {

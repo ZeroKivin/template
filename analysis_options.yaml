@@ -18,8 +18,12 @@ dart_code_metrics:
   anti-patterns:
     - long-method:
         exclude:
-          - lib/assets/theme/app_theme.dart
-    - long-parameter-list
+          - lib/assets/theme/**.dart
+          - lib/assets/theme/extension/**.dart
+    - long-parameter-list:
+        exclude:
+          - lib/assets/theme/**.dart
+          - lib/assets/theme/extension/**.dart
   metrics:
     cyclomatic-complexity: 20
     source-lines-of-code: 60
@@ -30,13 +34,12 @@ dart_code_metrics:
   metrics-exclude:
     - test/**
   rules:
-    - list_remove_unrelated_type
-    - iterable_contains_unrelated_type
+    - avoid-collection-methods-with-unrelated-types
     - avoid-duplicate-exports
     - avoid-dynamic
     - avoid-global-state
     - avoid-missing-enum-constant-in-map
-    - avoid-nested-conditional-expressions§
+    - avoid-nested-conditional-expressions
     - avoid-unnecessary-type-assertions
     - avoid-unnecessary-type-casts:
         - exclude:
@@ -45,8 +48,9 @@ dart_code_metrics:
     - avoid-unused-parameters
     - binary-expression-operand-order
     - double-literal-format
-    - format-comment
-    - member-ordering-extended:
+    - format-comment:
+        only-doc-comments: true
+    - member-ordering:
         order:
           - constructors
           - public-fields
@@ -56,6 +60,21 @@ dart_code_metrics:
           - public-setters
           - private-getters
           - private-setters
+          - public-methods
+          - private-methods
+        widgets-order:
+          - constructor
+          - public-fields
+          - private-fields
+          - public-getters
+          - public-setters
+          - private-getters
+          - private-setters
+          - init-state-method
+          - did-change-dependencies-method
+          - did-update-widget-method
+          - dispose-method
+          - build-method
           - public-methods
           - private-methods
     - newline-before-return:
@@ -86,12 +105,18 @@ dart_code_metrics:
     - avoid-returning-widgets
     - avoid-shrink-wrap-in-lists
     - avoid-unnecessary-setstate
-    - avoid-use-expanded-as-spacer
+    - avoid-expanded-as-spacer
     - avoid-wrapping-in-padding
+    - check-for-equals-in-render-object-setters
+    - consistent-update-render-object
     - prefer-const-border-radius
     - prefer-correct-edge-insets-constructor
     - prefer-single-widget-per-file:
         ignore-private-widgets: true
+    - prefer-using-list-view
+    - use-setstate-synchronously:
+        methods:
+          - setState
 
 linter:
   rules:
@@ -135,7 +160,6 @@ linter:
     - do_not_use_environment
     - eol_at_end_of_file
     - flutter_style_todos
-    - invariant_booleans
     - join_return_with_assignment
     - leading_newlines_in_multiline_strings
     - lines_longer_than_80_chars

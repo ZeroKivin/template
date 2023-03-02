@@ -13,16 +13,15 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  dio: ^4.0.6
+  dio: ^5.0.1
   logger: ^1.1.0
-  provider: ^6.0.3
-  retrofit: ^3.0.1+1
-  json_annotation: ^4.6.0
-  freezed_annotation: ^2.1.0
-  easy_localization: ^3.0.1
+  provider: ^6.0.5
+  retrofit: ^4.0.1
+  json_annotation: ^4.8.0
+  freezed_annotation: ^2.2.0
   pretty_dio_logger: ^1.1.1
-  elementary: ^1.5.0
-  auto_route: ^5.0.1
+  elementary: ^2.0.0
+  auto_route: ^5.0.4
 
 
 dev_dependencies:
@@ -30,15 +29,15 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.1
-  dart_code_metrics: ^4.17.1
-  build_runner: ^2.1.10
-  json_serializable: ^6.2.0
-  freezed: ^2.1.0+1
-  retrofit_generator: ^4.0.1
+  dart_code_metrics: ^5.6.0
+  build_runner: ^2.3.3
+  json_serializable: ^6.6.1
+  freezed: ^2.3.2
+  retrofit_generator: ^5.0.0
   mocktail: ^0.3.0
   mocktail_image_network: ^0.3.1
-  golden_toolkit: ^0.13.0
-  auto_route_generator: ^5.0.2
+  golden_toolkit: ^0.15.0
+  auto_route_generator: ^5.0.3
 
 flutter:
   uses-material-design: true
