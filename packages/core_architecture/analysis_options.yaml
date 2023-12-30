@@ -5,7 +5,6 @@ analyzer:
     - test/**
     - lib/**.freezed.dart
     - lib/**.g.dart
-    - lib/**/generated/**
   language:
     strict-inference: true
     strict-raw-types: true

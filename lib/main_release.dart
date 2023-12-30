@@ -1,20 +1,16 @@
-import 'package:template/config/app_config.dart';
-import 'package:template/config/debug_options.dart';
-import 'package:template/config/environment/build_type.dart';
-import 'package:template/config/environment/environment.dart';
-import 'package:template/config/url.dart';
-import 'package:template/runner.dart';
+import 'dart:async';
 
-/// Main entry point of app.
-void main() {
-  Environment.init(
-    buildType: BuildType.release,
-    config: AppConfig(
-      url: Url.prodUrl,
-      proxyUrl: Url.prodProxyUrl,
-      debugOptions: DebugOptions(),
-    ),
-  );
+import 'app/app_runner.dart';
+import 'environment/build_type.dart';
+import 'environment/config/debug_options.dart';
+import 'util/logger/logger.dart';
 
-  run();
-}
+void main() => runZonedGuarded(
+      () => AppRunner().initializeAndRun(
+        buildType: BuildType.release,
+        debugOptions: const DebugOptions(
+          debugShowCheckedModeBanner: false,
+        ),
+      ),
+      logger.logZoneError,
+    );

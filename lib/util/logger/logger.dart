@@ -1,4 +1,7 @@
-import 'package:logger/logger.dart';
+import 'default/default_logger.dart';
 
-/// Create an instance [Logger].
-final logger = Logger();
+export 'common/base_logger.dart';
+export 'common/log_level.dart';
+export 'common/log_options.dart';
+
+final logger = DefaultLogger();
