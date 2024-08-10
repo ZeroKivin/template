@@ -6,11 +6,8 @@ import 'generated/l10n.dart';
 final class Localization extends GeneratedLocalization {
   final Locale locale;
 
+  static const localizationDelegate = _LocalizationDelegate();
   static Localization? _current;
-
-  static const localizationDelegate = _LocalizationDelegate(
-    AppLocalizationDelegate(),
-  );
 
   Localization._({
     required this.locale,
@@ -18,8 +15,9 @@ final class Localization extends GeneratedLocalization {
 
   static Localization? get current => _current;
 
-  static List<Locale> get supportedLocales =>
-      const AppLocalizationDelegate().supportedLocales;
+  static List<Locale> get supportedLocales {
+    return GeneratedLocalization.delegate.supportedLocales;
+  }
 
   static List<LocalizationsDelegate<void>> get localizationDelegates => [
         GlobalMaterialLocalizations.delegate,
@@ -31,7 +29,7 @@ final class Localization extends GeneratedLocalization {
   static Locale computeDefaultLocale() {
     final locale = WidgetsBinding.instance.platformDispatcher.locale;
 
-    if (const AppLocalizationDelegate().isSupported(locale)) {
+    if (GeneratedLocalization.delegate.isSupported(locale)) {
       return locale;
     }
 
@@ -50,20 +48,19 @@ final class Localization extends GeneratedLocalization {
 }
 
 final class _LocalizationDelegate extends LocalizationsDelegate<Localization> {
-  final AppLocalizationDelegate _delegate;
-
-  const _LocalizationDelegate(
-    this._delegate,
-  );
+  const _LocalizationDelegate();
 
   @override
-  bool isSupported(Locale locale) => _delegate.isSupported(locale);
+  bool isSupported(Locale locale) {
+    return GeneratedLocalization.delegate.isSupported(locale);
+  }
 
   @override
-  Future<Localization> load(Locale locale) =>
-      GeneratedLocalization.load(locale).then(
-        (value) => Localization._current = Localization._(locale: locale),
-      );
+  Future<Localization> load(Locale locale) {
+    return GeneratedLocalization.load(locale).then(
+      (value) => Localization._current = Localization._(locale: locale),
+    );
+  }
 
   @override
   bool shouldReload(_LocalizationDelegate old) => false;

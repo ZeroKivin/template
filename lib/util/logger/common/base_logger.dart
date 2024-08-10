@@ -71,7 +71,7 @@ abstract base class BaseLogger {
     StackTrace stackTrace,
   );
 
-  void logControllerError(
+  void logBlocError(
     Type runtimeType,
     Object exception,
     StackTrace stackTrace,

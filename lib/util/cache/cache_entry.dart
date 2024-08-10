@@ -5,12 +5,11 @@ abstract base class CacheEntry<T extends Object> {
 
   String get key;
 
-  T? read();
+  Future<T?> read();
 
   Future<void> set(T value);
 
   Future<void> remove();
 
-  Future<void> setIfNullRemove(T? value) =>
-      value == null ? remove() : set(value);
+  Future<void> setOrRemove(T? value) => value == null ? remove() : set(value);
 }

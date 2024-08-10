@@ -5,13 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../environment/environment.dart';
-import '../../feature/network/rest_api/rest_api_client.dart';
-import '../../feature/setting/controller/setting_controller.dart';
-import '../../feature/setting/repository/data_source/locale/locale_data_source.dart';
-import '../../feature/setting/repository/data_source/theme_mode/theme_mode_codec.dart';
-import '../../feature/setting/repository/data_source/theme_mode/theme_mode_data_source.dart';
-import '../../feature/setting/repository/setting_repository.dart';
-import '../../feature/setting/state/setting_state.dart';
+import '../../feature/network/network.dart';
+import '../../feature/settings/settings.dart';
 import '../../localization/localization.dart';
 import '../dependencies.dart';
 
@@ -19,7 +14,7 @@ typedef StepAction = FutureOr<void>? Function(MutableDependencies dependencies);
 
 mixin InitializationSteps {
   final initializationSteps = <String, StepAction>{
-    'Rest Api Client': (dependencies) {
+    'RestApiClient': (dependencies) {
       final environment = Environment.instance();
       const timeout = Duration(seconds: 30);
       final dio = Dio(
@@ -35,35 +30,42 @@ mixin InitializationSteps {
         dio.options.baseUrl = environment.config.url;
       });
 
-      dependencies.restApiClient = RestApiClient.dio(dio: dio);
+      dependencies.restApiClient = DioRestApiClient(
+        dio: dio,
+      );
     },
-    'Shared Preferences': (dependencies) async {
+    'SharedPreferences': (dependencies) async {
       final sharedPreferences = await SharedPreferences.getInstance();
       dependencies.sharedPreferences = sharedPreferences;
     },
-    'Setting Repository': (dependencies) {
-      dependencies.settingsRepository = SettingsRepository(
-        themeModeDataSource: ThemeModeDataSource.local(
+    'SettingRepository': (dependencies) {
+      dependencies.settingsRepository = DefaultSettingsRepository(
+        themeModeDataSource: ThemeModeDataSourceLocal(
           sharedPreferences: dependencies.sharedPreferences,
           codec: const ThemeModeCodec(),
         ),
-        localeDataSource: LocaleDataSource.local(
+        localeDataSource: LocaleDataSourceLocal(
+          sharedPreferences: dependencies.sharedPreferences,
+        ),
+        textScaleDataSource: TextScaleDataSourceLocal(
           sharedPreferences: dependencies.sharedPreferences,
         ),
       );
     },
-    'Setting Controller': (dependencies) async {
+    'SettingBloc': (dependencies) async {
       final repository = dependencies.settingsRepository;
 
-      final themeMode = await repository.getThemeMode();
-      final locale = await repository.getLocale();
+      final themeMode = await repository.themeMode;
+      final locale = await repository.locale;
+      final textScale = await repository.textScale;
 
-      dependencies.settingController = SettingController(
-        initialState: SettingState(
+      dependencies.settingsController = SettingsBloc(
+        settingsRepository: repository,
+        initialState: SettingsState(
           locale: locale ?? Localization.computeDefaultLocale(),
           themeMode: themeMode ?? ThemeMode.system,
+          textScale: textScale ?? 1,
         ),
-        settingsRepository: repository,
       );
     },
   };

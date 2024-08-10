@@ -12,12 +12,11 @@ export 'config/url.dart';
 final class Environment<T extends AppConfig> implements Listenable {
   static Environment? _instance;
 
-  final BuildType _currentBuildType;
-
-  ValueNotifier<T> _config;
+  final BuildType _buildType;
+  final ValueNotifier<T> _config;
 
   Environment._(
-    this._currentBuildType,
+    this._buildType,
     T config,
   ) : _config = ValueNotifier(config);
 
@@ -36,13 +35,13 @@ final class Environment<T extends AppConfig> implements Listenable {
   T get config => _config.value;
 
   /// Is this application running in debug mode.
-  bool get isDebug => _currentBuildType == BuildType.debug;
+  bool get isDebug => _buildType == BuildType.debug;
 
   /// Is this application running in release mode.
-  bool get isRelease => _currentBuildType == BuildType.release;
+  bool get isRelease => _buildType == BuildType.release;
 
   /// App build type.
-  BuildType get buildType => _currentBuildType;
+  BuildType get buildType => _buildType;
 
   set config(T c) => _config.value = c;
 

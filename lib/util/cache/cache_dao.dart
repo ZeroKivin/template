@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cache_entry.dart';
@@ -7,8 +8,9 @@ export 'cache_entry.dart';
 abstract base class CacheDao {
   final SharedPreferences _sharedPreferences;
 
-  const CacheDao({required SharedPreferences sharedPreferences})
-      : _sharedPreferences = sharedPreferences;
+  const CacheDao({
+    required SharedPreferences sharedPreferences,
+  }) : _sharedPreferences = sharedPreferences;
 
   CacheEntry<bool> boolEntry(String key) => _CacheEntry<bool>(
         key: key,
@@ -49,15 +51,15 @@ final class _CacheEntry<T extends Object> extends CacheEntry<T> {
   final String key;
 
   @override
-  T? read() {
+  Future<T?> read() {
     final value = _sharedPreferences.get(key);
 
     if (value == null) {
-      return null;
+      return SynchronousFuture(null);
     }
 
     if (value is T) {
-      return value;
+      return SynchronousFuture(value);
     }
 
     throw Exception(

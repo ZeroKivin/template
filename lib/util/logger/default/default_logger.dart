@@ -18,7 +18,9 @@ final class DefaultLogger extends BaseLogger {
           printer: PrettyPrinter(
             colors: options.colors,
             printEmojis: options.printEmojis,
-            printTime: options.printTime,
+            dateTimeFormat: options.printTime
+                ? DateTimeFormat.onlyTimeAndSinceStart
+                : DateTimeFormat.none,
           ),
         ),
         super(options);
@@ -70,7 +72,7 @@ final class DefaultLogger extends BaseLogger {
       );
 
   @override
-  void logControllerError(
+  void logBlocError(
     Type runtimeType,
     Object exception,
     StackTrace stackTrace,

@@ -1,15 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../feature/network/rest_api/rest_api_client.dart';
-import '../feature/setting/controller/setting_controller.dart';
-import '../feature/setting/repository/setting_repository.dart';
+import '../feature/settings/settings.dart';
 
 abstract interface class Dependencies {
   SharedPreferences get sharedPreferences;
 
   SettingsRepository get settingsRepository;
 
-  SettingController get settingController;
+  SettingsController get settingsController;
 
   RestApiClient get restApiClient;
 }
@@ -19,37 +18,39 @@ class MutableDependencies implements Dependencies {
   late SharedPreferences sharedPreferences;
 
   @override
-  late SettingsRepository settingsRepository;
+  late DefaultSettingsRepository settingsRepository;
 
   @override
-  late SettingController settingController;
+  late SettingsController settingsController;
+
   @override
   late RestApiClient restApiClient;
 
-  Dependencies freeze() => FreezedDependencies(
+  Dependencies freeze() => _FreezedDependencies(
         sharedPreferences: sharedPreferences,
         settingsRepository: settingsRepository,
-        settingController: settingController,
+        settingsController: settingsController,
         restApiClient: restApiClient,
       );
 }
 
-class FreezedDependencies implements Dependencies {
+class _FreezedDependencies implements Dependencies {
   @override
   final SharedPreferences sharedPreferences;
 
   @override
-  final SettingsRepository settingsRepository;
+  final DefaultSettingsRepository settingsRepository;
 
   @override
-  final SettingController settingController;
+  final SettingsController settingsController;
+
   @override
   final RestApiClient restApiClient;
 
-  const FreezedDependencies({
+  const _FreezedDependencies({
     required this.sharedPreferences,
     required this.settingsRepository,
-    required this.settingController,
+    required this.settingsController,
     required this.restApiClient,
   });
 }
